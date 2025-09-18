@@ -4,7 +4,7 @@ import 'splash_screen.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
 import 'home_screen.dart';
-import 'dashboard_screen.dart';
+import 'bottom_navigation_screen.dart';
 import 'user_session.dart';
 
 void main() {
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/home': (context) => const HomeScreen(),
-        '/dashboard': (context) => const DashboardScreen(),
+        '/dashboard': (context) => const BottomNavigationScreen(),
       },
     );
   }

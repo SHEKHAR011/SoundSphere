@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dashboard_screen.dart';
 import 'user_session.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -61,12 +60,8 @@ class _SignUpPageState extends State<SignUpPage> {
       _isLoading = false;
     });
 
-    // Navigate to dashboard
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const DashboardScreen()),
-      (route) => false,
-    );
+    // Navigate to bottom navigation screen
+    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
   }
 
   @override

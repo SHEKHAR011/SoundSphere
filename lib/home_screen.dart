@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
-import 'dashboard_screen.dart';
 import 'user_session.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,13 +11,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userSession = Provider.of<UserSession>(context);
     
-    // If user is already logged in, go directly to dashboard
+    // If user is already logged in, go directly to bottom navigation screen
     if (userSession.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
-        );
+        Navigator.pushReplacementNamed(context, '/dashboard');
       });
     }
 
