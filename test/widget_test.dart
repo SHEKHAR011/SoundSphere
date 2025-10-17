@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
+// SoundSphere Music App Widget Test
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Tests the basic functionality of the music app interface
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:soundsphere/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('SoundSphere app launches and shows splash screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the app shows SoundSphere title
+    expect(find.text('SoundSphere'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify splash screen elements are present
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    
+    // Wait for splash screen animation
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+    
+    // After splash, should navigate to login/home
+    // (Note: Exact navigation depends on user session state)
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('App has proper theme and styling', (WidgetTester tester) async {
+    // Build our app
+    await tester.pumpWidget(const MyApp());
+
+    // Verify MaterialApp is properly configured
+    final MaterialApp materialApp = tester.widget(find.byType(MaterialApp));
+    expect(materialApp.title, 'SoundSphere');
+    expect(materialApp.debugShowCheckedModeBanner, false);
   });
 }

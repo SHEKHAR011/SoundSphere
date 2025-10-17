@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'dashboard_screen.dart';
 import 'home_screen.dart';
 import 'user_session.dart';
+import 'library_screen.dart';
+import 'music_player_widget.dart';
+import 'search_screen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -16,72 +19,27 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Define pages inside build method to ensure context is available
     final pages = [
-      const DashboardScreen(), // Home tab
-      const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search,
-              size: 80,
-              color: Colors.deepPurple,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Search Screen',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Search functionality coming soon',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ), // Search tab
-      const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.library_music,
-              size: 80,
-              color: Colors.deepPurple,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Library Screen',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Your music library will appear here',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ), // Library tab
+      const DashboardScreen(),
+      const SearchScreen(), // Search tab
+      const LibraryScreen(), // Library tab
       _buildProfilePage(context), // Profile tab
     ];
 
     return Scaffold(
-      body: pages[_currentIndex],
+      body: Stack(
+        children: [
+          pages[_currentIndex],
+          // Mini player that appears at the bottom when music is playing
+          Positioned(
+            // position the mini player immediately above the BottomNavigationBar
+            bottom: kBottomNavigationBarHeight,
+            left: 0,
+            right: 0,
+            child: SafeArea(top: false, child: MiniPlayer()),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
@@ -93,22 +51,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_music),
             label: 'Library',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
@@ -174,9 +123,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                           const SizedBox(height: 5),
                           Text(
                             userSession.userEmail,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                         ],
                       ),
@@ -195,16 +142,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
               const SizedBox(height: 15),
               ListTile(
-                leading: const Icon(
-                  Icons.lock,
-                  color: Colors.deepPurple,
-                ),
+                leading: const Icon(Icons.lock, color: Colors.deepPurple),
                 title: const Text('Change Password'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text("Change password feature coming soon"),
+                      content: const Text(
+                        "Change password feature coming soon",
+                      ),
                       backgroundColor: Colors.deepPurple.shade700,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
@@ -237,15 +183,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                ),
+                leading: const Icon(Icons.logout, color: Colors.red),
                 title: const Text(
                   'Logout',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
+                  style: TextStyle(color: Colors.red),
                 ),
                 onTap: () {
                   // Show logout confirmation dialog
@@ -279,7 +220,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 onPressed: () {
                   // Logout the user
                   userSession.logout();
-                  
+
                   // Navigate back to home screen
                   Navigator.pushAndRemoveUntil(
                     context,

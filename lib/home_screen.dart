@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userSession = Provider.of<UserSession>(context);
     
-    // If user is already logged in, go directly to bottom navigation screen
     if (userSession.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacementNamed(context, '/dashboard');
@@ -41,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // App Logo
+
                   Container(
                     padding: const EdgeInsets.all(30),
                     decoration: BoxDecoration(

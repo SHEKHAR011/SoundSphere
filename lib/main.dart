@@ -6,11 +6,37 @@ import 'signup_page.dart';
 import 'home_screen.dart';
 import 'bottom_navigation_screen.dart';
 import 'user_session.dart';
+import 'services/songs_provider.dart';
+import 'services/user_music_service.dart';
+import 'services/music_player_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize user music service
+  await UserMusicService().initialize();
+  
+  print('SoundSphere Music App initialized');
+  print('✅ User preferences loaded');
+  print('✅ Asset songs will be loaded on demand');
+  
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserSession(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserSession(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SongsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserMusicService(),
+        ),
+        Provider<MusicPlayerService>(
+          create: (context) => MusicPlayerService(),
+          dispose: (context, service) => service.dispose(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
