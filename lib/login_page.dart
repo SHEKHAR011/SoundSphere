@@ -26,9 +26,6 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
     // Simple validation
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       setState(() {
@@ -48,16 +45,33 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // Login the user
+    // Login the user using Firebase
     final userSession = Provider.of<UserSession>(context, listen: false);
-    userSession.login("User", emailController.text);
+    bool loginSuccess = await userSession.loginWithEmail(
+      emailController.text.trim(), 
+      passwordController.text
+    );
 
     setState(() {
       _isLoading = false;
     });
 
-    // Navigate to bottom navigation screen
-    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    if (loginSuccess) {
+      // Navigate to bottom navigation screen
+      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    } else {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Login failed. Please check your credentials and try again."),
+          backgroundColor: Colors.deepOrange.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 
   @override

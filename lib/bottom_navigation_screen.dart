@@ -229,7 +229,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.deepPurple.shade700,
                 ),
                 child: const Text('Logout'),
               ),

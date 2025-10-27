@@ -28,9 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
       _isLoading = true;
     });
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
     // Simple validation
     if (nameController.text.isEmpty || 
         emailController.text.isEmpty || 
@@ -52,16 +49,34 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
-    // Sign up the user
+    // Sign up the user using Firebase
     final userSession = Provider.of<UserSession>(context, listen: false);
-    userSession.login(nameController.text, emailController.text);
+    bool signUpSuccess = await userSession.signUpWithEmail(
+      emailController.text.trim(), 
+      passwordController.text,
+      nameController.text
+    );
 
     setState(() {
       _isLoading = false;
     });
 
-    // Navigate to bottom navigation screen
-    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    if (signUpSuccess) {
+      // Navigate to bottom navigation screen
+      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    } else {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Sign up failed. This email may already be in use or password is too weak."),
+          backgroundColor: Colors.deepOrange.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 
   @override

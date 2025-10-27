@@ -9,16 +9,22 @@ import 'user_session.dart';
 import 'services/songs_provider.dart';
 import 'services/user_music_service.dart';
 import 'services/music_player_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize user music service
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+ 
   await UserMusicService().initialize();
   
   print('SoundSphere Music App initialized');
   print('✅ User preferences loaded');
   print('✅ Asset songs will be loaded on demand');
+  print('✅ Firebase initialized');
   
   runApp(
     MultiProvider(
