@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dashboard_screen.dart';
-import 'home_screen.dart';
 import 'user_session.dart';
 import 'library_screen.dart';
 import 'music_player_widget.dart';
 import 'search_screen.dart';
+import 'login_page.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -200,16 +200,26 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     );
   }
 
-  void _showLogoutDialog(BuildContext context, UserSession userSession) {
+  Future<void> _showLogoutDialog(BuildContext context, UserSession userSession) async {
+    bool isLoggingOut = false;
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Logout'),
-          content: const Text('Are you sure you want to logout?'),
+          content: isLoggingOut
+              ? const Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 16),
+                    Text('Logging out...'),
+                  ],
+                )
+              : const Text('Are you sure you want to logout?'),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: isLoggingOut ? null : () {
                 Navigator.pop(context); // Close dialog
               },
               child: const Text('Cancel'),
@@ -217,21 +227,48 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             SizedBox(
               height: 55,
               child: ElevatedButton(
-                onPressed: () {
-                  // Logout the user
-                  userSession.logout();
-
-                  // Navigate back to home screen
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    (route) => false,
-                  );
+                onPressed: isLoggingOut ? null : () async {
+                  // Prevent multiple taps during logout
+                  setState(() {
+                    isLoggingOut = true;
+                  });
+                  
+                  try {
+                    // Logout the user
+                    await userSession.logout();
+                    
+                    // Small delay to ensure logout process completes
+                    await Future.delayed(const Duration(milliseconds: 300));
+                    
+                    // Navigate back to login screen
+                    if (context.mounted) {
+                      Navigator.of(context).pop(); // Close dialog first
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        (route) => false,
+                      );
+                    }
+                  } catch (e) {
+                    // Re-enable button if there was an error
+                    if (mounted) {
+                      setState(() {
+                        isLoggingOut = false;
+                      });
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple.shade700,
+                  disabledBackgroundColor: Colors.grey.shade400,
                 ),
-                child: const Text('Logout'),
+                child: isLoggingOut
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                      )
+                    : const Text('Logout'),
               ),
             ),
           ],
