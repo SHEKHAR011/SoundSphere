@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
-    // Simple validation
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       setState(() {
         _isLoading = false;

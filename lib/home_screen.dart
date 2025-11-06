@@ -100,22 +100,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   
                   // Guest Access Option
-                  TextButton(
-                    onPressed: () {
-                      // Handle guest access
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text("Guest access not implemented yet"),
-                          backgroundColor: Colors.deepPurple.shade700,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text("Continue as Guest"),
-                  ),
+
                 ],
               ),
             ),
