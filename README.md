@@ -33,7 +33,7 @@ It provides a clean, modern interface for managing and enjoying music — all wi
 
 - Built with **Android Studio (Kotlin)**  
 - Uses **Firebase Authentication** for secure user login  
-- Reads and lists local music files using **MediaStore API**  
+- Reads and lists local music files
 - Stores user details and preferences in **Firebase Firestore**  
 - Implements **ViewModel** and **LiveData** for reactive UI updates  
 
