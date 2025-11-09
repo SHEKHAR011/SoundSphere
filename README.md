@@ -1,6 +1,6 @@
 # 🎶 SoundSphere
 
-**SoundSphere** is an Android music application that allows users to securely log in using **Firebase Authentication** and play songs stored locally on their device.  
+**SoundSphere** is an flutter music application that allows users to securely log in using **Firebase Authentication** and play songs stored locally on their device.  
 It provides a clean, modern interface for managing and enjoying music — all without the need for internet connectivity.
 
 ---
