@@ -13,7 +13,7 @@ It provides a clean, modern interface for managing and enjoying music — all wi
 - Full-featured **music player** with Play, Pause, Next, Previous, and Shuffle controls  
 - **Album art** and **song information** display  
 - **Persistent playback bar** visible across screens  
-- Background playback with notification controls  
+- Background playback
 - Sleek **Material Design 3 (MD3)** interface  
 
 ---
@@ -34,7 +34,6 @@ It provides a clean, modern interface for managing and enjoying music — all wi
 - Built with **Android Studio (Kotlin)**  
 - Uses **Firebase Authentication** for secure user login  
 - Reads and lists local music files using **MediaStore API**  
-- Plays songs using **MediaPlayer API**  
 - Stores user details and preferences in **Firebase Firestore**  
 - Implements **ViewModel** and **LiveData** for reactive UI updates  
 
